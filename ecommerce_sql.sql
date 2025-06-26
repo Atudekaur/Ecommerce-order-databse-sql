@@ -298,6 +298,15 @@ from orders o
 join users u on o.user_id = u.user_id 
 join payments p on o.order_id = p.order_id; 
 
+-- find users who have items in their cart but haven’t placed any order
+select u.name ,u.user_id  from users u 
+where u.user_id in(select user_id from cart) and u.user_id not in (select user_id from orders);
+
+-- . list all orders with total item quantity in each order
+select o.order_id,u.name ,sum(oi.quantity) from orders o
+join users u on o.user_id = u.user_id
+join order_items oi on o.order_id = oi.order_id
+group by o.order_id, u.name;
 -- procedures & triggers
 
 -- procedure: get all orders by user id
